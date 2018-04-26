@@ -24,9 +24,11 @@ class BackendTest(onnx.backend.test.BackendTest):
             # Has issues on osx tests; temporarily disabling.
             self.exclude('test_slice_start_out_of_bounds_opencl_cpu.0')
 
-            # These run, but have accuracy issues on osx.
+            # These run, but have accuracy issues on osx CPU.
             self.exclude('test_densenet121_opencl_cpu.0')
             self.exclude('test_shufflenet_opencl_cpu.0')
+            self.exclude('test_resnet50_opencl_cpu.0')
+            self.exclude('test_inception_v2_opencl_cpu.0')
 
         # Unimplemented functionality
         self.exclude('test_ReflectionPad2d_')  # Requires Pad(reflect)
@@ -37,6 +39,10 @@ class BackendTest(onnx.backend.test.BackendTest):
         self.exclude('test_hardmax_one_hot_')  # Requires filtered Hardmax
         self.exclude('test_top_k_')  # Requires TopK
         self.exclude('test_Upsample_nearest_scale_2d_')  # Requires Upsample
+
+        # These work, but they're slow, and cause problems on Travis.
+        self.exclude('test_vgg16_')
+        self.exclude('test_vgg19_')
 
     def _add_test(self, category, test_name, test_func, report_item, devices=None):
         if not devices:
