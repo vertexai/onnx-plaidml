@@ -38,14 +38,6 @@ class BackendTest(onnx.backend.test.BackendTest):
         self.exclude('test_top_k_')  # Requires TopK
         self.exclude('test_Upsample_nearest_scale_2d_')  # Requires Upsample
 
-        # These work, but they're slow, and they don't work if they're all together --
-        # likely due to holding onto temporary allocations on the GPU.
-        self.exclude('test_resnet50_')
-        self.exclude('test_inception_v1_')
-        self.exclude('test_inception_v2_')
-        self.exclude('test_vgg16_')
-        self.exclude('test_vgg19_')
-
     def _add_test(self, category, test_name, test_func, report_item, devices=None):
         if not devices:
             devices = tuple(opb.PlaidMLBackend.device_configs.keys())
