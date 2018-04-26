@@ -2,6 +2,7 @@
 
 import json
 import os
+import platform
 import unittest
 
 import onnx
@@ -19,8 +20,13 @@ class BackendTest(onnx.backend.test.BackendTest):
     def __init__(self, backend, name):
         super(BackendTest, self).__init__(backend, name)
 
-        # Has issues on osx tests; temporarily disabling.
-        self.exclude('test_slice_start_out_of_bounds_opencl_cpu.0')
+        if platform.system() == 'Darwin':
+            # Has issues on osx tests; temporarily disabling.
+            self.exclude('test_slice_start_out_of_bounds_opencl_cpu.0')
+
+            # These run, but have accuracy issues on osx.
+            self.exclude('test_densenet121_opencl_cpu.0')
+            self.exclude('test_shufflenet_opencl_cpu.0')
 
         # Unimplemented functionality
         self.exclude('test_ReflectionPad2d_')  # Requires Pad(reflect)
