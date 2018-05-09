@@ -418,6 +418,18 @@ class Selu(tile.Operation):
         super(Selu, self).__init__(code, [('X', data)], [('Y', data.shape)])
 
 
+class Sqrt(tile.Operation):
+    """
+    Computes the elementwise square root of a value.
+    """
+
+    def __init__(self, x):
+        super(Sqrt, self).__init__("""
+            function (I) -> (O) {
+                O = sqrt(I);
+            } """, [('I', x)], [('O', x.shape)])
+
+
 class ThresholdedRelu(tile.Operation):
     """
     Implements a thresholded relu.
@@ -909,7 +921,7 @@ class _V1(object):
     @staticmethod
     @opset_op('Sqrt')
     def sqrt(value):
-        return (op.sqrt(value),)
+        return (Sqrt.function(value),)
 
     @staticmethod
     @opset_op('Squeeze')
