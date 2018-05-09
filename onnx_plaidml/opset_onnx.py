@@ -8,7 +8,7 @@ import operator
 import six
 import sys
 
-from onnx import onnx_pb2
+from onnx import onnx_pb
 import onnx_plaidml.opset_util as opset_util
 from onnx_plaidml.opset_util import opset, opset_op
 import plaidml
@@ -25,7 +25,7 @@ class Constant(tile.Operation):
         """Initialize the Constant tensor operation.
         
         Args:
-            value (onnx_pb2.TensorProto): The tensor to construct.
+            value (onnx_pb.TensorProto): The tensor to construct.
         """
         self.value = value
         try:
@@ -34,7 +34,7 @@ class Constant(tile.Operation):
             six.raise_from(
                 NotImplementedError(
                     'ONNX data type {} is not yet implemented by the PlaidML ONNX backend'.format(
-                        onnx_pb2.TensorProto.DataType.Name(value.data_type))), None)
+                        onnx_pb.TensorProto.DataType.Name(value.data_type))), None)
         super(Constant, self).__init__(None, [], [('O', outshape)])
 
     def bind(self, bindings):
@@ -542,7 +542,7 @@ class _V1(object):
     @staticmethod
     @opset_op('Cast')
     def cast(x, to):
-        dtype = opset_util.ONNX_DTYPE_TO_PLAIDML[onnx_pb2.TensorProto.DataType.Value(to.decode('utf-8'))]
+        dtype = opset_util.ONNX_DTYPE_TO_PLAIDML[onnx_pb.TensorProto.DataType.Value(to.decode('utf-8'))]
         return (op.cast(x, dtype),)
 
     @staticmethod
