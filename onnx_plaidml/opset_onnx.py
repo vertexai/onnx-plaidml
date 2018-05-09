@@ -698,6 +698,18 @@ class _V1(object):
         return (tile.maximum(0., tile.minimum(1., alpha * x + beta)),)
 
     @staticmethod
+    @opset_op('InstanceNormalization')
+    def instance_normalization(value, scale, bias, epsilon=1e-5):
+        shape = [value.shape.dims[1]] + ([1] * (value.shape.ndims - 2))
+        scale = op.reshape(scale, shape)
+        bias = op.reshape(bias, shape)
+        mean = op.mean(value, axes=list(range(2, value.shape.ndims)), keepdims=True)
+        variance = op.variance(value, axes=list(range(2, value.shape.ndims)), keepdims=True)
+
+        denom = op.sqrt(variance + epsilon)
+        return (((value - mean) * scale / denom) + bias,)
+
+    @staticmethod
     @opset_op('LeakyRelu')
     def leaky_relu(x, alpha=0.01):
         return (op.relu(x, alpha),)
