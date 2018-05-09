@@ -542,7 +542,8 @@ class _V1(object):
     @staticmethod
     @opset_op('Cast')
     def cast(x, to):
-        dtype = opset_util.ONNX_DTYPE_TO_PLAIDML[onnx_pb.TensorProto.DataType.Value(to.decode('utf-8'))]
+        dtype = opset_util.ONNX_DTYPE_TO_PLAIDML[onnx_pb.TensorProto.DataType.Value(
+            to.decode('utf-8'))]
         return (op.cast(x, dtype),)
 
     @staticmethod
