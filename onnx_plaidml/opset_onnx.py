@@ -1021,10 +1021,15 @@ class _V6(_V5):
     pass
 
 
-OPSETS = [_V1, _V2, _V3, _V4, _V5, _V6]
+@opset('', 7)
+class _V7(_V6):
+    pass
+
+
+OPSETS = [_V1, _V2, _V3, _V4, _V5, _V6, _V7]
 
 # As a special case for the ONNX operator set, we define a default version:
 # this is the version of the ONNX operator set that will be loaded when there
 # is no operator set defined by the model.  It should typically be the highest
 # version of the operator set defined by this module.
-DEFAULT_VERSION = 6
+DEFAULT_VERSION = 7
