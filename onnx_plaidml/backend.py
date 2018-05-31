@@ -153,23 +153,10 @@ class PlaidMLBackend(onnx.backend.base.Backend):
     ops = opset_onnx.OPSETS
 
     @classmethod
-    def prepare(cls, model, device=None, **kwargs):
-        if device is None:
-            device = cls._get_default_device()
-        return super(PlaidMLBackend, cls).prepare(model, device=device, **kwargs)
-
-    @classmethod
     def run_model(cls, model, inputs, device=None, **kwargs):
         if device is None:
             device = cls._get_default_device()
         return super(PlaidMLBackend, cls).run_model(model, device=device, **kwargs)
-
-    @classmethod
-    def run_node(cls, node, inputs, device=None, outputs_info=None, **kwargs):
-        if device is None:
-            device = cls._get_default_device()
-        return super(PlaidMLBackend, cls).run_node(
-            node, inputs, device=device, output_info=outputs_info, **kwargs)
 
     @classmethod
     def _get_default_device(cls):
@@ -233,7 +220,7 @@ class PlaidMLBackend(onnx.backend.base.Backend):
                     '"{}"/"{}" is not implemented by the PlaidML ONNX backend'.format(
                         node.domain, node.op_type)), None)
 
-        output_vars = operation(*input_vars, **attrs)
+        output_vars = operation(opset_util.Context(node), *input_vars, **attrs)
 
         for (name, var) in zip(node.output, output_vars):
             bindings[name] = var

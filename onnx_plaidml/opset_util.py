@@ -1,6 +1,7 @@
 # Copyright Vertex.AI.
 """ONNX-PlaidML ONNX operator utilities."""
 
+from collections import namedtuple
 import operator
 import struct
 
@@ -136,3 +137,6 @@ def onnx_type_to_placeholder_value(type_proto):
     dtype = ONNX_DTYPE_TO_PLAIDML[type_proto.tensor_type.elem_type]
     dims = tuple([dim.dim_value for dim in type_proto.tensor_type.shape.dim])
     return tile.Value.from_dimensions(dims, dtype=dtype)
+
+
+Context = namedtuple('Context', ['node'])
