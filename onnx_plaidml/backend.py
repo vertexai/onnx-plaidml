@@ -136,13 +136,20 @@ class PlaidMLBackendRep(onnx.backend.base.BackendRep):
             val = tile.Value.from_python_value(inp, ctx=self._ctx, dev=self._dev).var
             self._invoker.set_input(_as_input_id(valinfo.name), val)
         outputs = []
+        all_zero_outputs = True
         for valinfo in self._model.graph.output:
             shape = self._invoker.get_output_shape(_as_output_id(valinfo.name))
+            for d in shape.dimensions:
+                if d.size == 0:
+                    break
+            else:
+                all_zero_outputs = False
             output = plaidml.Tensor(self._dev, shape)
             outputs.append(output)
             self._invoker.set_output(_as_output_id(valinfo.name), output)
 
-        self._invoker.invoke()
+        if not all_zero_outputs:
+            self._invoker.invoke()
 
         return [output.as_ndarray(self._ctx) for output in outputs]
 
