@@ -50,29 +50,17 @@ class BackendTest(onnx.backend.test.BackendTest):
         self.exclude('test_Upsample_nearest_2d_')  # Requires Upsample
         self.exclude('test_Upsample_nearest_scale_2d_')  # Requires Upsample
         self.exclude('test_Upsample_nearest_tuple_2d_')  # Requires Upsample
-        self.exclude('test_operator_addmm_')  # Requires Gemm with multiplier broadcast
         self.exclude('test_operator_convtranspose_')  # Requires ConvTranspose
         self.exclude('test_operator_lstm_')  # Requires ConstantFill
         self.exclude('test_operator_rnn_')  # Requires ConstantFill
         self.exclude('test_operator_repeat_')  # Requires Tile
         self.exclude('test_operator_pad_')  # Requires additional padding modes
-
-        # Correctness errors
-        self.exclude('test_averagepool_2d_default_')  # Close, but error exceeds limits
-        self.exclude('test_averagepool_3d_default_')  # Close, but error exceeds limits
-
-        # Implementation errors
-        self.exclude('test_operator_mm_')  # Wrong shape; no chance this is correct.
-
-        # ONNX 1.2.1 errors
-        self.exclude('test_reshape_extended_dims_')
-        self.exclude('test_reshape_negative_dim_')
-        self.exclude('test_reshape_one_dim_')
-        self.exclude('test_reshape_reduced_dims_')
-        self.exclude('test_reshape_reordered_dims_')
-        self.exclude('test_operator_repeat_dim_overflow_')
-
-        self.exclude('test_PixelShuffle_')  # Unclear what the issue is here
+        self.exclude('test_reshape_extended_dims_')  # Requires V5 reshape semantics
+        self.exclude('test_reshape_negative_dim_')  # Requires V5 reshape semantics
+        self.exclude('test_reshape_one_dim_')  # Requires V5 reshape semantics
+        self.exclude('test_reshape_reduced_dims_')  # Requires V5 reshape semantics
+        self.exclude('test_reshape_reordered_dims_')  # Requires V5 reshape semantics
+        self.exclude('test_PixelShuffle_')  # Requires V5 reshape semantics
 
         # Tests that are correct, but take too long on CI.
         self.exclude('test_bvlc_alexnet_')

@@ -1185,7 +1185,19 @@ class _V4(_V3):
 
 @opset('', 5)
 class _V5(_V4):
-    pass
+
+    @staticmethod
+    @opset_op('Reshape')
+    def reshape(unused_ctx, data, shape):
+        # Reshape V5 takes its shape as a tensor.  This is tricky to implement -- there's no good
+        # way to provide constant values to the reshape() operation until all inputs are actually
+        # bound.  Once inputs have been bound, we could construct a program whose output is the
+        # one-dimensional shape tensor, run it, read the result, and use that to build the
+        # correct reshape() operation for the actual program we want to run.  But note that
+        # changing the input tensor may require recompiling the program, which is somewhat against
+        # PlaidML's model.  So this needs some further thought.
+        raise NotImplementedError(
+            'Version-5 reshape() is not yet implemented by the PlaidML ONNX backend')
 
 
 @opset('', 6)
