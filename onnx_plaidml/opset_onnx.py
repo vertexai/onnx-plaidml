@@ -297,7 +297,7 @@ class Gemm(tile.Operation):
                 return value
             newdims = (value.shape.dims[0], functools.reduce(lambda x, y: x * y,
                                                              value.shape.dims[1:]))
-            return reshape(value, newdims)
+            return op.reshape(value, newdims)
 
         a = gemm_reshape(a)
         b = gemm_reshape(b)
