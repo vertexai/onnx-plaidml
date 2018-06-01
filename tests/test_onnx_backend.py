@@ -74,6 +74,16 @@ class BackendTest(onnx.backend.test.BackendTest):
 
         self.exclude('test_PixelShuffle_')  # Unclear what the issue is here
 
+        # Tests that are correct, but take too long on CI.
+        self.exclude('test_bvlc_alexnet_')
+        self.exclude('test_densenet121_')
+        self.exclude('test_inception_v1_')
+        self.exclude('test_inception_v2_')
+        self.exclude('test_resnet50_')
+        self.exclude('test_shufflenet_')
+        self.exclude('test_vgg19_')
+        self.exclude('test_zfnet512_')
+
     def _add_test(self, category, test_name, test_func, report_item, devices=None):
         if not devices:
             devices = tuple(opb.PlaidMLBackend.device_configs.keys())
